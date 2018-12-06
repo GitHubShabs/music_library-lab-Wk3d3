@@ -1,5 +1,6 @@
 require('pg')
 require_relative('../db/sql_runner')
+require_relative('album')
 
 class Artist
 
@@ -26,6 +27,12 @@ attr_accessor(:name)
       @id = SqlRunner.run(sql, values)[0]['id'].to_i
   end
 
+  def albums()
+      sql = "SELECT * FROM album WHERE customer_id = $1 "
+      values = [@id]
+      results = SqlRunner.run(sql, values)
+      return results.map { |songs| Album.new(songs)}
+    end
 
 
 end
